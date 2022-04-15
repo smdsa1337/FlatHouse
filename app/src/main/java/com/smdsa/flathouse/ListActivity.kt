@@ -48,6 +48,14 @@ class ListActivity : AppCompatActivity() {
 
             }
         })
+        binding.signOutButton.setOnClickListener {
+            auth.signOut()
+            checkAuth()
+        }
+        binding.addButton.setOnClickListener {
+            intent = Intent(this, AddFlatActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun checkAuth() {

@@ -66,7 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="50dp"
-        android:background="?android:attr/listDivider"
+        android:background="?attr/colorOnSecondary"
         app:layout_constraintTop_toBottomOf="@id/cardView"
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
