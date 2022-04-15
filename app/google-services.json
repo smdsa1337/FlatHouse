@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "110067985076",
+    "firebase_url": "https://flathouse-d7d8f-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "flathouse-d7d8f",
+    "storage_bucket": "flathouse-d7d8f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110067985076:android:7d7461403be252aee345e1",
+        "android_client_info": {
+          "package_name": "com.smdsa.flathouse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "110067985076-93dqa8dfd5e8jf531allju4akhb4e31j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUJid651cVHQi654SSg4TCrTvM4IwVdqw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "110067985076-93dqa8dfd5e8jf531allju4akhb4e31j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
