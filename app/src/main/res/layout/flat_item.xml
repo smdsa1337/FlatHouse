@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/constraint"
     android:layout_marginTop="50dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,7 +17,7 @@
         android:layout_gravity="center"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="15dp">
+        android:layout_marginStart="15dp">
 
         <ImageView
             android:id="@+id/objectImage"
@@ -67,7 +68,7 @@
         android:layout_height="1dp"
         android:layout_marginTop="50dp"
         android:background="?attr/colorOnSecondary"
-        app:layout_constraintTop_toBottomOf="@id/cardView"
+        app:layout_constraintTop_toBottomOf="@id/areaText"
         app:layout_constraintLeft_toRightOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
