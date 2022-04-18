@@ -32,7 +32,14 @@ class AddFlatActivity : AppCompatActivity() {
             selectImage()
         }
         binding.addButton.setOnClickListener {
-            uploadImage()
+            if(binding.areaText.text.toString().isNotEmpty() && binding.addressText.text.toString().isNotEmpty() &&
+                binding.countRoomsText.text.toString().isNotEmpty() && binding.floorText.text.toString().isNotEmpty() &&
+                binding.priceText.text.toString().isNotEmpty() && binding.price2metr.text.toString().isNotEmpty()) {
+                uploadImage()
+            }
+            else{
+                Toast.makeText(this,"Вы оставили какое-то поле пустым",Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -62,15 +69,10 @@ class AddFlatActivity : AppCompatActivity() {
         val storageReference = FirebaseStorage.getInstance("gs://flathouse-d7d8f.appspot.com/").getReference(
             fileName
         )
-        storageReference.putFile(ImageUri).addOnSuccessListener {
-            storageReference.downloadUrl.addOnSuccessListener {
-                image = it.toString()
-                if(binding.areaText.text.toString().isNotEmpty() &&
-                    binding.addressText.text.toString().isNotEmpty() &&
-                    binding.countRoomsText.text.toString().isNotEmpty() &&
-                    binding.floorText.text.toString().isNotEmpty() &&
-                    binding.priceText.text.toString().isNotEmpty() &&
-                    binding.price2metr.text.toString().isNotEmpty()){
+        try{
+            storageReference.putFile(ImageUri).addOnSuccessListener {
+                storageReference.downloadUrl.addOnSuccessListener {
+                    image = it.toString()
                     var flatDataClass = FlatDataClass(
                         Area = binding.areaText.text.toString(),
                         Address = binding.addressText.text.toString(),
@@ -82,20 +84,22 @@ class AddFlatActivity : AppCompatActivity() {
                     var key = getFirebaseReference("News").push().key
                     myRef.child(key.toString()).setValue(flatDataClass).addOnCompleteListener {
                         if(it.isSuccessful){
-
+                            finish()
                         }
                         else{
                             Log.e("Check","$it")
                         }
+                    }.addOnCanceledListener {
+                        Toast.makeText(this,"PUTO",Toast.LENGTH_SHORT).show()
                     }
                 }
-                else{
-                    Toast.makeText(this,"Вы оставили какое-то поле пустым",Toast.LENGTH_SHORT).show()
-                }
-                finish()
             }
-        }.addOnFailureListener{
-            Log.e("Check","$it")
+        }
+        catch (ex: Exception){
+            if(progressDialog.isShowing){
+                progressDialog.cancel()
+            }
+            Log.e("Check","$ex")
         }
     }
 
