@@ -28,7 +28,7 @@ class AddFlatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAddFlatBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.addPhoto.setOnClickListener {
+        binding.cardView.setOnClickListener {
             selectImage()
         }
         binding.addButton.setOnClickListener {
@@ -60,7 +60,7 @@ class AddFlatActivity : AppCompatActivity() {
 
     private fun uploadImage() {
         val progressDialog = ProgressDialog(this)
-        progressDialog.setMessage("Upload photo")
+        progressDialog.setMessage("Создание объявления")
         progressDialog.setCancelable(false)
         progressDialog.show()
         val formatter = SimpleDateFormat("yyyy_MM_dd_HH-mm_ss", Locale.getDefault())
@@ -107,6 +107,7 @@ class AddFlatActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == 100 && resultCode == Activity.RESULT_OK){
             ImageUri = data?.data!!
+            binding.textInCard.text = "Изображение выбрано"
         }
     }
 }
