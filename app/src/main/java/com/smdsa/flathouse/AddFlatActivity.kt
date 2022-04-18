@@ -90,7 +90,7 @@ class AddFlatActivity : AppCompatActivity() {
                             Log.e("Check","$it")
                         }
                     }.addOnCanceledListener {
-                        Toast.makeText(this,"PUTO",Toast.LENGTH_SHORT).show()
+
                     }
                 }
             }
