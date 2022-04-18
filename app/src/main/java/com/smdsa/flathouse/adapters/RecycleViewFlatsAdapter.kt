@@ -1,30 +1,42 @@
 package com.smdsa.flathouse.adapters
 
 import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.smdsa.flathouse.R
 
-class RecycleViewFlatsAdapter(val data: ArrayList<FlatDataClass>, val context: Context) :
+class RecycleViewFlatsAdapter(private val data: ArrayList<FlatDataClass>, val context: Context) :
     RecyclerView.Adapter<RecycleViewFlatsAdapter.VH>() {
 
-    class VH(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private lateinit var mListener: OnRecycleViewListener
+
+    interface OnRecycleViewListener{
+        fun onRecycleViewClick (position: Int)
+    }
+
+    fun setOnRecycleViewClick(listener: OnRecycleViewListener){
+        mListener = listener
+    }
+
+    class VH(itemView: View, listener: OnRecycleViewListener) : RecyclerView.ViewHolder(itemView){
         var image: ImageView = itemView.findViewById(R.id.objectImage)
         var price: TextView = itemView.findViewById(R.id.priceText)
         var address: TextView = itemView.findViewById(R.id.addressText)
         var area: TextView = itemView.findViewById(R.id.areaText)
-        var layout: ConstraintLayout = itemView.findViewById(R.id.constraint)
+        init {
+            itemView.setOnClickListener {
+                listener.onRecycleViewClick(adapterPosition)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        return VH(LayoutInflater.from(context).inflate(R.layout.flat_item, parent, false))
+        return VH(LayoutInflater.from(context).inflate(R.layout.flat_item, parent, false), mListener)
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
@@ -33,9 +45,6 @@ class RecycleViewFlatsAdapter(val data: ArrayList<FlatDataClass>, val context: C
         holder.price.text = "Цена: "+data[holder.adapterPosition].Price + " рублей"
         holder.address.text ="Адресс: " + data[holder.adapterPosition].Address
         holder.area.text ="Площадь: " + data[holder.adapterPosition].Area
-        holder.layout.setOnClickListener {
-
-        }
     }
 
     override fun getItemCount(): Int {
