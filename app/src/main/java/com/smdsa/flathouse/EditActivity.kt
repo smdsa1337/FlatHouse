@@ -7,6 +7,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.smdsa.flathouse.adapters.FlatDataClass
@@ -71,6 +72,9 @@ class EditActivity : AppCompatActivity() {
                 binding.countRoomsText.text.toString().isNotEmpty() && binding.floorText.text.toString().isNotEmpty() &&
                 binding.priceText.text.toString().isNotEmpty() && binding.price2metr.text.toString().isNotEmpty()) {
                 uploadImage()
+            }
+            else{
+                Toast.makeText(this,"Вы оставили какое-то поле пустым", Toast.LENGTH_SHORT).show()
             }
         }
     }
