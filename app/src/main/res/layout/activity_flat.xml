@@ -34,14 +34,14 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/backButton"
-            android:text="Back"
+            android:id="@+id/removeButton"
+            android:text="Remove"
             android:textColor="@color/white"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="70dp"/>
 
         <com.google.android.material.button.MaterialButton
