@@ -20,16 +20,16 @@ class AddFlatActivity : AppCompatActivity() {
 
     private lateinit var imageUri: Uri
     private lateinit var binding: ActivityAddFlatBinding
-    private lateinit var database: DatabaseReference
     private lateinit var image: String
     private lateinit var progressDialog: ProgressDialog
     private lateinit var flatDataClass: FlatDataClass
+    private var database: DatabaseReference = FirebaseDatabase.getInstance("https://flathouse-d7d8f-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Objects")
+    private var storageReference = FirebaseStorage.getInstance("gs://flathouse-d7d8f.appspot.com/").getReference(SimpleDateFormat("yyyy_MM_dd_HH-mm_ss", Locale.getDefault()).format(Date()))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddFlatBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        database = FirebaseDatabase.getInstance("https://flathouse-d7d8f-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Objects")
         binding.cardView.setOnClickListener {
             selectImage()
         }
@@ -59,9 +59,6 @@ class AddFlatActivity : AppCompatActivity() {
         progressDialog.setMessage("Создание объявления")
         progressDialog.setCancelable(false)
         progressDialog.show()
-        val storageReference = FirebaseStorage.getInstance("gs://flathouse-d7d8f.appspot.com/").getReference(
-            SimpleDateFormat("yyyy_MM_dd_HH-mm_ss", Locale.getDefault()).format(Date())
-        )
         try{
             storageReference.putFile(imageUri).addOnSuccessListener {
                 storageReference.downloadUrl.addOnSuccessListener {

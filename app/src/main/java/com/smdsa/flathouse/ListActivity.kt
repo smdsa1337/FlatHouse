@@ -64,6 +64,7 @@ class ListActivity : AppCompatActivity() {
         binding.addButton.setOnClickListener {
             intent = Intent(this, AddFlatActivity::class.java)
             startActivity(intent)
+            onRestart()
         }
     }
 
