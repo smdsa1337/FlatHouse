@@ -1,9 +1,9 @@
 package com.smdsa.flathouse
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.firebase.database.*
@@ -12,12 +12,11 @@ import com.smdsa.flathouse.adapters.FlatDataClass
 import com.smdsa.flathouse.adapters.SharedPreference
 import com.smdsa.flathouse.databinding.ActivityFlatBinding
 import java.lang.Exception
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class FlatActivity() : AppCompatActivity() {
 
+    private lateinit var progressDialog: ProgressDialog
     private lateinit var binding: ActivityFlatBinding
     private lateinit var sharedPreference: SharedPreference
     private var database: DatabaseReference = FirebaseDatabase.getInstance("https://flathouse-d7d8f-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Objects")
@@ -57,24 +56,27 @@ class FlatActivity() : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {}
         })
         binding.removeButton.setOnClickListener {
-            database.child(arrayKeys[a]).removeValue().addOnCompleteListener {
+            progressDialog = ProgressDialog(this)
+            progressDialog.setMessage("Удаление объявления")
+            progressDialog.setCancelable(false)
+            progressDialog.show()
+            var storageReference = FirebaseStorage.getInstance("gs://flathouse-d7d8f.appspot.com/").getReferenceFromUrl(arrayList[a].Image.toString())
+            storageReference.delete().addOnCompleteListener {
                 if(it.isSuccessful){
-                    var storageReference = FirebaseStorage.getInstance("gs://flathouse-d7d8f.appspot.com/").getReferenceFromUrl(arrayList[a].Image.toString())
-                    storageReference.delete().addOnCompleteListener {
+                    database.child(arrayKeys[a]).removeValue().addOnCompleteListener {
                         if(it.isSuccessful){
-                            sharedPreference.clearSharedPreference()
-                            intent = Intent(this, ListActivity::class.java)
-                            startActivity(intent)
-                            finish()
+                            if(progressDialog.isShowing){
+                                progressDialog.cancel()
+                                sharedPreference.clearSharedPreference()
+                                finish()
+                            }
+                        }
+                        else{
+                            Log.e("Not successful it in FlatActivity: ","$it")
                         }
                     }
-
-                }
-                else{
-                    Log.e("Not successful it in FlatActivity: ","$it")
                 }
             }
-
         }
         binding.editButton.setOnClickListener {
             intent = Intent(this,EditActivity::class.java)
