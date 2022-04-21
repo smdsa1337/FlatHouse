@@ -20,30 +20,29 @@ import kotlin.collections.ArrayList
 class EditActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditBinding
-    private lateinit var database: DatabaseReference
     private lateinit var sharedPreference: SharedPreference
-    private lateinit var ImageUri : Uri
-    var NewImage : Boolean = false
-    var arrayKeys = ArrayList<String>()
-    var image = ""
-    var prevImage = ""
+    private lateinit var ImageUri: Uri
+    private lateinit var progressDialog: ProgressDialog
+    private lateinit var image: String
+    private lateinit var flatDataClass: FlatDataClass
+    private var NewImage: Boolean = false
+    private var arrayKeys: ArrayList<String> = ArrayList<String>()
+    private var arrayList: ArrayList<FlatDataClass> = ArrayList<FlatDataClass>()
+    private var database: DatabaseReference = FirebaseDatabase.getInstance("https://flathouse-d7d8f-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Objects")
+    private var storageReference = FirebaseStorage.getInstance("gs://flathouse-d7d8f.appspot.com/").getReference( SimpleDateFormat("yyyy_MM_dd_HH-mm_ss", Locale.getDefault()).format(Date()))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
         sharedPreference = SharedPreference(this)
-        var arrayList = ArrayList<FlatDataClass>()
-        database = FirebaseDatabase.getInstance("https://flathouse-d7d8f-default-rtdb.europe-west1.firebasedatabase.app/").getReference("Objects")
         database.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
                     arrayList.clear()
                     for (snap in snapshot.children){
-                        val objects = snap.getValue(FlatDataClass::class.java)
-                        val keys = snap.key
-                        arrayList.add(objects!!)
-                        arrayKeys.add(keys!!)
+                        arrayList.add(snap.getValue(FlatDataClass::class.java)!!)
+                        arrayKeys.add(snap.key.toString())
                     }
                     var a = sharedPreference.getValueInt("position")
                     binding.priceText.setText("${arrayList[a].Price}")
@@ -52,23 +51,20 @@ class EditActivity : AppCompatActivity() {
                     binding.floorText.setText("${arrayList[a].Floor}")
                     binding.price2metr.setText("${arrayList[a].Price2metr}")
                     binding.countRoomsText.setText("${arrayList[a].CountRooms}")
-                    prevImage = arrayList[a].Image.toString()
+                    image = arrayList[a].Image.toString()
                 }
             }
 
-            override fun onCancelled(error: DatabaseError) {
-
-            }
+            override fun onCancelled(error: DatabaseError) {}
         })
         binding.cardView.setOnClickListener {
             selectImage()
-            NewImage = true
         }
         binding.editButton.setOnClickListener {
             if(binding.areaText.text.toString().isNotEmpty() && binding.addressText.text.toString().isNotEmpty() &&
                 binding.countRoomsText.text.toString().isNotEmpty() && binding.floorText.text.toString().isNotEmpty() &&
                 binding.priceText.text.toString().isNotEmpty() && binding.price2metr.text.toString().isNotEmpty()) {
-                uploadImage()
+                upload()
             }
             else{
                 Toast.makeText(this,"Вы оставили какое-то поле пустым", Toast.LENGTH_SHORT).show()
@@ -84,31 +80,28 @@ class EditActivity : AppCompatActivity() {
         }
         startActivityForResult(intent, 100)
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == 100 && resultCode == Activity.RESULT_OK){
             ImageUri = data?.data!!
+            NewImage = true
             binding.textInCard.text = "Изображение выбрано"
         }
     }
-    private fun uploadImage() {
-        val progressDialog = ProgressDialog(this)
+
+    private fun upload() {
+        progressDialog = ProgressDialog(this)
         progressDialog.setMessage("Редактирование объявления")
         progressDialog.setCancelable(false)
         progressDialog.show()
         var a = sharedPreference.getValueInt("position")
-        val formatter = SimpleDateFormat("yyyy_MM_dd_HH-mm_ss", Locale.getDefault())
-        val now = Date()
-        val fileName = formatter.format(now)
-        val storageReference = FirebaseStorage.getInstance("gs://flathouse-d7d8f.appspot.com/").getReference(
-            fileName
-        )
         try{
             if(NewImage){
                 storageReference.putFile(ImageUri).addOnSuccessListener {
                     storageReference.downloadUrl.addOnSuccessListener {
                         image = it.toString()
-                        var flatDataClass = FlatDataClass(
+                        flatDataClass = FlatDataClass(
                             Area = binding.areaText.text.toString(),
                             Address = binding.addressText.text.toString(),
                             CountRooms = binding.countRoomsText.text.toString(),
@@ -116,44 +109,45 @@ class EditActivity : AppCompatActivity() {
                             Price = binding.priceText.text.toString(),
                             Price2metr = binding.price2metr.text.toString(),
                             Image = image)
-
-                        if(image != ""){
-                            flatDataClass.Image = image
-                        }
-                        else{
-                            flatDataClass.Image = prevImage
-                        }
-                        database.child(arrayKeys[a].toString()).setValue(flatDataClass).addOnCompleteListener {
+                        database.child(arrayKeys[a]).setValue(flatDataClass).addOnCompleteListener {
                             if(it.isSuccessful){
-                                finish()
+                                if(progressDialog.isShowing){
+                                    progressDialog.cancel()
+                                    finish()
+                                }
+                                else{
+                                    finish()
+                                }
                             }
                             else{
-                                Log.e("Check","$it")
+                                Log.e("Not successful it in EditActivity: ","$it")
                             }
-                        }.addOnCanceledListener {
-
                         }
                     }
                 }
             }
             else{
-                var flatDataClass = FlatDataClass(
+                flatDataClass = FlatDataClass(
                     Area = binding.areaText.text.toString(),
                     Address = binding.addressText.text.toString(),
                     CountRooms = binding.countRoomsText.text.toString(),
                     Floor = binding.floorText.text.toString(),
                     Price = binding.priceText.text.toString(),
                     Price2metr = binding.price2metr.text.toString(),
-                    Image = prevImage)
-                database.child(arrayKeys[a].toString()).setValue(flatDataClass).addOnCompleteListener {
+                    Image = image)
+                database.child(arrayKeys[a]).setValue(flatDataClass).addOnCompleteListener {
                     if(it.isSuccessful){
-                        finish()
+                        if(progressDialog.isShowing){
+                            progressDialog.cancel()
+                            finish()
+                        }
+                        else{
+                            finish()
+                        }
                     }
                     else{
-                        Log.e("Check","$it")
+                        Log.e("Not successful it in EditActivity: ","$it")
                     }
-                }.addOnCanceledListener {
-
                 }
             }
         }
@@ -161,7 +155,7 @@ class EditActivity : AppCompatActivity() {
             if(progressDialog.isShowing){
                 progressDialog.cancel()
             }
-            Log.e("Check","$ex")
+            Log.e("Exception in EditActivity.kt: ","$ex")
         }
     }
 }

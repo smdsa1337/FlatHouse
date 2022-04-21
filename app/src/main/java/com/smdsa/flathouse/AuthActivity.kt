@@ -36,7 +36,16 @@ class AuthActivity : AppCompatActivity() {
                             finish()
                         }
                         else{
-                            Toast.makeText(this,"Неверный логин или пароль",Toast.LENGTH_SHORT).show()
+                            if(it.exception.toString() == "com.google.firebase.auth.FirebaseAuthInvalidUserException: There is no user record corresponding to this identifier. The user may have been deleted."){
+                                Toast.makeText(this,"Аккаунт не найден", Toast.LENGTH_SHORT).show()
+                            }
+                            if(it.exception.toString() == "com.google.firebase.auth.FirebaseAuthInvalidCredentialsException: The email address is badly formatted."){
+                                Toast.makeText(this,"Неверный логин или пароль", Toast.LENGTH_SHORT).show()
+                            }
+                            if(it.exception.toString() == "com.google.firebase.auth.FirebaseAuthInvalidCredentialsException: The password is invalid or the user does not have a password."){
+                                Toast.makeText(this,"Неверный логин или пароль", Toast.LENGTH_SHORT).show()
+                            }
+                            Log.e("SD","${it.exception}")
                         }
                     }
                 }
