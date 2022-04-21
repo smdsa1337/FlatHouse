@@ -3,7 +3,6 @@ package com.smdsa.flathouse
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -40,7 +39,6 @@ class ListActivity : AppCompatActivity(){
                 if (snapshot.exists()) {
                     arrayList.clear()
                     for (snap in snapshot.children) {
-                        onRestart()
                         arrayList.add(snap.getValue(FlatDataClass::class.java)!!)
                     }
                 }
@@ -51,7 +49,6 @@ class ListActivity : AppCompatActivity(){
                         sharedPreference.save("position", position)
                         intent = Intent(this@ListActivity, FlatActivity::class.java)
                         startActivity(intent)
-                        onRestart()
                     }
                 })
                 binding.recycleView.adapter = adapter
