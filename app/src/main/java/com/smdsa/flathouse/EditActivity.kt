@@ -27,9 +27,6 @@ class EditActivity : AppCompatActivity() {
     var arrayKeys = ArrayList<String>()
     var image = ""
     var prevImage = ""
-    val myRef : DatabaseReference = FirebaseDatabase
-        .getInstance("https://flathouse-d7d8f-default-rtdb.europe-west1.firebasedatabase.app/")
-        .getReference("Objects")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,7 +123,7 @@ class EditActivity : AppCompatActivity() {
                         else{
                             flatDataClass.Image = prevImage
                         }
-                        myRef.child(arrayKeys[a].toString()).setValue(flatDataClass).addOnCompleteListener {
+                        database.child(arrayKeys[a].toString()).setValue(flatDataClass).addOnCompleteListener {
                             if(it.isSuccessful){
                                 finish()
                             }
@@ -148,7 +145,7 @@ class EditActivity : AppCompatActivity() {
                     Price = binding.priceText.text.toString(),
                     Price2metr = binding.price2metr.text.toString(),
                     Image = prevImage)
-                myRef.child(arrayKeys[a].toString()).setValue(flatDataClass).addOnCompleteListener {
+                database.child(arrayKeys[a].toString()).setValue(flatDataClass).addOnCompleteListener {
                     if(it.isSuccessful){
                         finish()
                     }
