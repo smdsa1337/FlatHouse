@@ -45,7 +45,6 @@ class AuthActivity : AppCompatActivity() {
                             if(it.exception.toString() == "com.google.firebase.auth.FirebaseAuthInvalidCredentialsException: The password is invalid or the user does not have a password."){
                                 Toast.makeText(this,"Неверный логин или пароль", Toast.LENGTH_SHORT).show()
                             }
-                            Log.e("SD","${it.exception}")
                         }
                     }
                 }
@@ -54,7 +53,7 @@ class AuthActivity : AppCompatActivity() {
                 }
             }
             catch (ex: Exception){
-                Log.e("Check","$ex")
+                Log.e("Exception in AuthActivity.kt: ","$ex")
             }
         }
     }

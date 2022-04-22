@@ -81,7 +81,7 @@
             android:layout_marginRight="50dp"
             android:hint="Площадь"
             android:textSize="20sp"
-            android:maxLength="50"
+            android:maxLength="4"
             android:inputType="number"
             android:textAlignment="center"
             android:background="@drawable/edittext_style"
@@ -98,7 +98,7 @@
             android:layout_marginRight="50dp"
             android:hint="Количество комнат"
             android:textSize="20sp"
-            android:maxLength="50"
+            android:maxLength="3"
             android:inputType="number"
             android:textAlignment="center"
             android:background="@drawable/edittext_style"
@@ -132,30 +132,13 @@
             android:layout_marginRight="50dp"
             android:hint="Цена"
             android:textSize="20sp"
-            android:maxLength="50"
+            android:maxLength="9"
             android:inputType="number"
             android:textAlignment="center"
             android:background="@drawable/edittext_style"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/floorText" />
-
-        <EditText
-            android:id="@+id/price2metr"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:hint="Цена за кв. метр"
-            android:textSize="20sp"
-            android:maxLength="50"
-            android:inputType="number"
-            android:textAlignment="center"
-            android:background="@drawable/edittext_style"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/priceText" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addButton"
@@ -171,7 +154,7 @@
             android:layout_height="60dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/price2metr"/>
+            app:layout_constraintTop_toBottomOf="@id/priceText"/>
 
         <Space
             android:layout_width="match_parent"

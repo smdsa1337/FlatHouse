@@ -34,13 +34,21 @@ class AddFlatActivity : AppCompatActivity() {
             selectImage()
         }
         binding.addButton.setOnClickListener {
-            if(binding.areaText.text.toString().isNotEmpty() && binding.addressText.text.toString().isNotEmpty() &&
-                binding.countRoomsText.text.toString().isNotEmpty() && binding.floorText.text.toString().isNotEmpty() &&
-                binding.priceText.text.toString().isNotEmpty() && binding.price2metr.text.toString().isNotEmpty()) {
-                upload()
+            if(binding.areaText.text.toString().isNotEmpty() && binding.addressText.text.toString().isNotEmpty() && binding.countRoomsText.text.toString().isNotEmpty() && binding.floorText.text.toString().isNotEmpty() && binding.priceText.text.toString().isNotEmpty()){
+                if(Integer.parseInt(binding.areaText.text.toString()) > 0){
+                    if(Integer.parseInt(binding.priceText.text.toString()) >= Integer.parseInt(binding.areaText.text.toString())){
+                        upload()
+                    }
+                    else{
+                        Toast.makeText(this,"Недопустимое значение для цены",Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else{
+                    Toast.makeText(this,"Площадь не может быть меньше единицы",Toast.LENGTH_SHORT).show()
+                }
             }
             else{
-                Toast.makeText(this,"Вы оставили какое-то поле пустым",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Вы оставили какое-то поле пустым", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -63,13 +71,14 @@ class AddFlatActivity : AppCompatActivity() {
             storageReference.putFile(imageUri).addOnSuccessListener {
                 storageReference.downloadUrl.addOnSuccessListener {
                     image = it.toString()
+                    val a = Integer.parseInt(binding.priceText.text.toString()) / Integer.parseInt(binding.areaText.text.toString())
                     flatDataClass = FlatDataClass(
                         Area = binding.areaText.text.toString(),
                         Address = binding.addressText.text.toString(),
                         CountRooms = binding.countRoomsText.text.toString(),
                         Floor = binding.floorText.text.toString(),
                         Price = binding.priceText.text.toString(),
-                        Price2metr = binding.price2metr.text.toString(),
+                        Price2metr = a.toString(),
                         Image = image)
                     database.child(getKey("Objects").push().key.toString()).setValue(flatDataClass).addOnCompleteListener {
                         if(it.isSuccessful){
@@ -84,8 +93,6 @@ class AddFlatActivity : AppCompatActivity() {
                         else{
                             Log.e("It in AddFlatActivity.kt is not successful: ","$it")
                         }
-                    }.addOnCanceledListener {
-                        Log.e("It in AddFlatActivity.kt is canceled: ","$it")
                     }
                 }
             }
