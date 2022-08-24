@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/authFragment">
+
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="com.smdsa.flathouse.fragments.AuthFragment"
+        android:label="fragment_auth"
+        tools:layout="@layout/fragment_auth" >
+        <action
+            android:id="@+id/action_authFragment_to_regFragment"
+            app:destination="@id/regFragment"
+            app:popUpTo="@id/authFragment" />
+        <action
+            android:id="@+id/action_authFragment_to_listFragment"
+            app:destination="@id/listFragment"
+            app:popUpTo="@id/nav_graph" />
+    </fragment>
+    <fragment
+        android:id="@+id/regFragment"
+        android:name="com.smdsa.flathouse.fragments.RegFragment"
+        android:label="RegFragment" >
+        <action
+            android:id="@+id/action_regFragment_to_listFragment"
+            app:destination="@id/listFragment"
+            app:popUpTo="@id/nav_graph" />
+    </fragment>
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.smdsa.flathouse.fragments.ListFragment"
+        android:label="fragment_list"
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/action_listFragment_to_addFlatFragment"
+            app:destination="@id/addFlatFragment"
+            app:popUpTo="@id/listFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_authFragment"
+            app:destination="@id/authFragment"
+            app:popUpTo="@id/nav_graph" />
+        <action
+            android:id="@+id/action_listFragment_to_flatFragment"
+            app:destination="@id/flatFragment"
+            app:popUpTo="@id/listFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addFlatFragment"
+        android:name="com.smdsa.flathouse.fragments.AddFlatFragment"
+        android:label="AddFlatFragment" >
+        <action
+            android:id="@+id/action_addFlatFragment_to_listFragment"
+            app:destination="@id/listFragment"
+            app:popUpTo="@id/nav_graph" />
+    </fragment>
+    <fragment
+        android:id="@+id/flatFragment"
+        android:name="com.smdsa.flathouse.fragments.FlatFragment"
+        android:label="FlatFragment" >
+        <action
+            android:id="@+id/action_flatFragment_to_listFragment"
+            app:destination="@id/listFragment"
+            app:popUpTo="@id/nav_graph" />
+        <action
+            android:id="@+id/action_flatFragment_to_editFragment"
+            app:destination="@id/editFragment"
+            app:popUpTo="@id/flatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.smdsa.flathouse.fragments.EditFragment"
+        android:label="EditFragment" >
+        <action
+            android:id="@+id/action_editFragment_to_flatFragment"
+            app:destination="@id/flatFragment"
+            app:popUpTo="@id/nav_graph" />
+        <action
+            android:id="@+id/action_editFragment_to_listFragment"
+            app:destination="@id/listFragment"
+            app:popUpTo="@id/nav_graph" />
+    </fragment>
+</navigation>

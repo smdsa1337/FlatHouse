@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "277204900297",
+    "project_id": "flathouse-cee3d",
+    "storage_bucket": "flathouse-cee3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:277204900297:android:95157b4a69fe48b7153018",
+        "android_client_info": {
+          "package_name": "com.smdsa.flathouse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "277204900297-h3gpvlle0fc5m4kemn2u42ba9k5j11tg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFMQQMi-n7hx-lNTzwhPbLL-r3tV8vIQ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "277204900297-h3gpvlle0fc5m4kemn2u42ba9k5j11tg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
